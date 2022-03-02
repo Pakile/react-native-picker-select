@@ -57,6 +57,7 @@ export default class RNPickerSelect extends PureComponent {
         // Custom Icon
         Icon: PropTypes.func,
         InputAccessoryView: PropTypes.func,
+        removePlaceholderInOption: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -85,6 +86,7 @@ export default class RNPickerSelect extends PureComponent {
         touchableWrapperProps: {},
         Icon: null,
         InputAccessoryView: null,
+        removePlaceholderInOption: false
     };
 
     static handlePlaceholder({ placeholder }) {
@@ -113,7 +115,7 @@ export default class RNPickerSelect extends PureComponent {
     constructor(props) {
         super(props);
 
-        const items = RNPickerSelect.handlePlaceholder({
+        const items = props.removePlaceholderInOption ? props.items : RNPickerSelect.handlePlaceholder({
             placeholder: props.placeholder,
         }).concat(props.items);
 
@@ -143,8 +145,8 @@ export default class RNPickerSelect extends PureComponent {
 
     componentDidUpdate = (prevProps, prevState) => {
         // update items if items or placeholder prop changes
-        const items = RNPickerSelect.handlePlaceholder({
-            placeholder: this.props.placeholder,
+        const items = this.props.removePlaceholderInOption ? this.props.items : RNPickerSelect.handlePlaceholder({
+          placeholder: this.props.placeholder,
         }).concat(this.props.items);
         const itemsChanged = !isEqual(prevState.items, items);
 
